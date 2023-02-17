@@ -1,0 +1,7 @@
+prototype(Sitegeist.FusionForm.FriendlyCaptcha:Scripts) < prototype(Neos.Fusion.Form:Component.Field) {
+    renderer = afx`
+        <script type="module" src="https://unpkg.com/friendly-challenge@0.9.9/widget.module.min.js" async defer></script>
+        <script nomodule src="https://unpkg.com/friendly-challenge@0.9.9/widget.min.js" async defer></script>
+        <script nomodule src="https://cdn.jsdelivr.net/npm/friendly-challenge@0.9.9/widget.min.js" async defer></script>
+    `
+}

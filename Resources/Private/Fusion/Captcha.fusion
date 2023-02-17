@@ -1,0 +1,8 @@
+prototype(Sitegeist.FusionForm.FriendlyCaptcha:Captcha) < prototype(Neos.Fusion.Form:Component.Field) {
+    captchaSiteKey = null
+    captchaSiteKey.@process.fallbackToSetting = ${value ? value : Configuration.setting('Sitegeist.FusionForm.FriendlyCaptcha.siteKey')}
+    renderer = afx`
+        <input type="hidden" id={field.getName()} name={field.getName()} value="" />
+        <div data-start="focus" class="frc-captcha" data-solution-field-name={field.getName()} data-sitekey={props.captchaSiteKey} data-puzzle-endpoint="https://api.friendlycaptcha.com/api/v1/puzzle"></div>
+    `
+}

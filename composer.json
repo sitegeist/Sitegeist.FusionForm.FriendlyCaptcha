@@ -1,0 +1,26 @@
+{
+    "description": "FriendlyCaptcha field and validator for Neos.Fusion.Form",
+    "authors": [
+        {
+            "name": "Arne Rekemeyer",
+            "email": "arne.rekemeyer@sitegeist.de",
+            "role": "Developer"
+        }
+    ],
+    "license": "GPL-3.0-or-later",
+    "type": "neos-package",
+    "name": "sitegeist/fusionform-friendlycaptcha",
+    "require": {
+        "neos/flow": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sitegeist\\FusionForm\\FriendlyCaptcha\\": "Classes/"
+        }
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Sitegeist.FusionForm.FriendlyCaptcha"
+        }
+    }
+}

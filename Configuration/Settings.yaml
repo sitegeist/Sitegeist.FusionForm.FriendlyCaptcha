@@ -1,0 +1,10 @@
+Sitegeist:
+  FusionForm:
+    FriendlyCaptcha:
+      siteKey: ''
+      siteSecret: ''
+Neos:
+  Neos:
+    fusion:
+      autoInclude:
+        Sitegeist.FusionForm.FriendlyCaptcha: true
