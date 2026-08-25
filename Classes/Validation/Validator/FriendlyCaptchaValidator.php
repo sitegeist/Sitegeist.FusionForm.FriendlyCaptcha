@@ -10,6 +10,7 @@ use Neos\Flow\Http\Client\CurlEngine;
 use Neos\Flow\Http\HttpRequestHandlerInterface;
 use Neos\Flow\Annotations AS Flow;
 use Neos\Flow\Validation\Validator\AbstractValidator;
+use Throwable;
 
 class FriendlyCaptchaValidator extends AbstractValidator
 {
@@ -36,6 +37,7 @@ class FriendlyCaptchaValidator extends AbstractValidator
         'siteSecret' => [null, 'siteSecret', 'string', false]
     ];
 
+    protected $acceptsEmptyValues = false;
 
     protected function isValid($captcha): void
     {
@@ -46,22 +48,35 @@ class FriendlyCaptchaValidator extends AbstractValidator
             /** @phpstan-ignore-next-line */
             $client = new CurlEngine();
             $client->setOption(CURLOPT_RETURNTRANSFER, true );
-            $response = $client->sendRequest(
-                new ServerRequest(
-                    'POST',
-                    new Uri('https://api.friendlycaptcha.com/api/v1/siteverify'),
-                    [
-                        'Content-Type' => 'application/json',
-                    ],
-                    json_encode([
-                        'secret' => $siteSecret,
-                        'solution' => $captchaResponse,
-                        'siteKey' => $siteKey
-                    ])
-                )
-            );
-            if (!json_decode($response->getBody()->getContents() ?: '')->success) {
-                $this->addError('Captcha is invalid.', 20230123115302);
+            try {
+                $response = $client->sendRequest(
+                    new ServerRequest(
+                        'POST',
+                        new Uri('https://api.friendlycaptcha.com/api/v1/siteverify'),
+                        [
+                            'Content-Type' => 'application/json',
+                        ],
+                        json_encode([
+                            'secret' => $siteSecret,
+                            'solution' => $captchaResponse,
+                            'sitekey' => $siteKey
+                        ])
+                    )
+                );
+            } catch (Throwable $exception) {
+                $this->addError('Captcha is invalid.', 20260811113841);
+                return;
+            }
+
+            if ($response->getStatusCode() < 200 || $response->getStatusCode() >= 300) {
+                $this->addError('Captcha is invalid.', 20260811113918);
+                return;
+            }
+
+            $verificationResult = json_decode($response->getBody()->getContents() ?: '', true);
+
+            if (!is_array($verificationResult) || ($verificationResult['success'] ?? false) !== true) {
+                $this->addError('Captcha is invalid.', 20260811113928);
             }
             return;
         }

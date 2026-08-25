@@ -4,6 +4,9 @@ Sitegeist:
       siteKey: ''
       siteSecret: ''
 Neos:
+  Fusion:
+    defaultContext:
+      FriendlyCaptcha: 'Sitegeist\FusionForm\FriendlyCaptcha\Eel\FriendlyCaptchaHelper'
   Neos:
     fusion:
       autoInclude:
